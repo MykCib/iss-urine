@@ -6,6 +6,27 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import uvicorn
+from datetime import datetime, timedelta
+
+def format_time(time_string):
+    # extract the number and unit
+    parts = time_string.split()
+    number = int(parts[0])
+    unit = parts[1]
+
+    # calculate timedelta
+    if unit.startswith("second"):
+        delta = timedelta(seconds=number)
+    elif unit.startswith("minute"):
+        delta = timedelta(minutes=number)
+    elif unit.startswith("hour"):
+        delta = timedelta(hours=number)
+    else:
+        raise ValueError("unsupported time unit")
+
+    # subtract from current time
+    new_time = datetime.now() - delta
+    return new_time.strftime("%H:%M")
 
 app = FastAPI()
 
@@ -36,7 +57,7 @@ async def scrape_data():
         element_time = driver.find_element(By.ID, "telem_time")
         value = element.text  # Get the value of the element
         time_value = element_time.text
-        return {"element_value": value, "time": time_value}
+        return {"element_value": value, "time": format_time(time_value)}
 
     except Exception as e:
         return {"error": str(e)}
