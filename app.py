@@ -33,9 +33,9 @@ async def scrape_data():
 
         # Locate the element by ID and class
         element = driver.find_element(By.ID, "NODE3000005")
-        time = driver.find_element(By.ID, "telem_time")
+        element_time = driver.find_element(By.ID, "telem_time")
         value = element.text  # Get the value of the element
-        timeValue = time.text
+        time_value = element_time.text
         return {"element_value": value, "time": timeValue}
 
     except Exception as e:
