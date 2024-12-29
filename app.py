@@ -36,7 +36,7 @@ async def scrape_data():
         element_time = driver.find_element(By.ID, "telem_time")
         value = element.text  # Get the value of the element
         time_value = element_time.text
-        return {"element_value": value, "time": timeValue}
+        return {"element_value": value, "time": time_value}
 
     except Exception as e:
         return {"error": str(e)}
